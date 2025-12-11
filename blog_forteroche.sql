@@ -99,6 +99,21 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `login`, `password`, `nickname`) VALUES
 (1, 'Emilie', '$2y$10$OefkCWfcDo.GKgFS2qmFYuITgzdDsrBp67p2.IrJOutZ9ptcsKCb.', 'Emilie Forteroche');
 
+
+--
+-- Structure de la table `article_view`
+--
+
+DROP TABLE IF EXISTS `article_view`;
+CREATE TABLE IF NOT EXISTS `article_view` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_article` int(11) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `link_article_view_article` (`id_article`),
+  CONSTRAINT `article_ip_unique` UNIQUE (`id_article`, `ip_address`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
 --
 -- Contraintes pour les tables déchargées
 --
@@ -114,7 +129,15 @@ ALTER TABLE `article`
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `link_comment_article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `article_view`
+--
+ALTER TABLE `article_view`
+  ADD CONSTRAINT `link_article_view_article` FOREIGN KEY (`id_article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+  
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
