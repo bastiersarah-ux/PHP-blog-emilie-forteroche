@@ -128,4 +128,39 @@ class ArticleManager extends AbstractEntityManager
         $stmt = $this->db->query($sql, [':id_article' => $articleId]);
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Tri les données du tableau de monitoring
+     * $sort = colonne par défaut pour trier (la date)
+     * $order = sens de tri par défaut (descendant)
+     *
+     * @param string $sort
+     * @param string $order
+     * @return array : un tableau d'objets MonitoringData.
+     */
+    public function getMonitoringData($sort = 'date_creation', $order = 'DESC'): array
+    {
+        $allowedSort = ['title', 'views', 'comments', 'date_creation']; // liste des colonnes autorisées pour le tri (sécurité contre l’injection SQL).
+        if (!in_array($sort, $allowedSort)) {
+            $sort = 'date_creation';
+        } // Si $sort n’est pas dans la liste, on retombe sur date.
+        $order = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';  // Normalisation de l’ordre de tri (ASC / DESC) : mesure de sécurité.
+        $sql = "SELECT a.id, a.title, a.date_creation,
+                (SELECT COUNT(1) FROM comment c WHERE c.id_article = a.id) AS comments,
+                (SELECT COUNT(1) FROM article_view av WHERE av.id_article = a.id) AS views
+            FROM article a;
+            ORDER BY :sort :order";
+
+        $result = $this->db->query($sql, [
+            'sort' => $sort,
+            'order' => $order
+        ]);
+        $data = [];
+
+        while ($line = $result->fetch()) {
+            $data[] = new MonitoringData($line);
+        }
+
+        return $data;
+    }
 }
