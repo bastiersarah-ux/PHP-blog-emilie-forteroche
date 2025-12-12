@@ -356,6 +356,11 @@ a.info {
     border: 1px solid var(--backgroundColor);
 }
 
+.btn-container {
+    display: flex;
+    gap: 1rem;
+}
+
 /** 
  * Footer global de la page.
  */
