@@ -6,6 +6,12 @@
 
 class AdminController
 {
+    private static $sortArray = [
+        'article' => 'title',
+        'date' => 'date_creation',
+        'views' => 'views',
+        'comments' => 'comments'
+    ];
 
     /**
      * Affiche la page d'administration.
@@ -112,16 +118,21 @@ class AdminController
         // On récupère l'article associé.
         $articleManager = new ArticleManager();
         $article = $articleManager->getArticleById($id);
+        $comments = [];
 
         // Si l'article n'existe pas, on en crée un vide. 
         if (!$article) {
             $article = new Article();
+        } else {
+            $commentManager = new CommentManager();
+            $comments = $commentManager->getAllCommentsByArticleId($id);
         }
 
         // On affiche la page de modification de l'article.
         $view = new View("Edition d'un article");
         $view->render("updateArticleForm", [
-            'article' => $article
+            'article' => $article,
+            'comments' => $comments
         ]);
     }
 
@@ -179,12 +190,45 @@ class AdminController
         Utils::redirect("admin");
     }
 
+    /**
+     * Suppression d'un commentaire.
+     * @return void
+     */
+    public function deleteComment(): void
+    {
+        $this->checkIfUserIsConnected();
+
+        $id = Utils::request("id", -1);
+        $idArticle = Utils::request("idArticle", -1);
+
+        // On supprime le commentaire.
+        $commentManager = new CommentManager();
+
+        $comment = $commentManager->getCommentById($id);
+
+        if ($comment != null) {
+            $commentManager->deleteComment($comment);
+        }
+
+        // On redirige vers la page d'administration.
+        Utils::redirect("showUpdateArticleForm", ['id' => $idArticle]);
+    }
+
+
+    /**
+     * Récupère le tri des données dans le tableau de monitoring
+     *
+     * @return void
+     */
     public function showMonitoringData(): void
     {
         $this->checkIfUserIsConnected();
 
-        $sort = Utils::request('sort', 'date_creation');
+        $sortKey = Utils::request('sort', 'date');
         $order = Utils::request('order', 'DESC');
+
+        $sort = AdminController::$sortArray[$sortKey]
+            ?? AdminController::$sortArray['date'];
 
         $articleManager = new ArticleManager();
         $statistics = $articleManager->getMonitoringData($sort, $order);

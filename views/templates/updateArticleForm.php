@@ -1,11 +1,12 @@
-<?php 
-    /** 
-     * Template du formulaire d'update/creation d'un article. 
-     */
+<?php
+
+/** 
+ * Template du formulaire d'update/creation d'un article. 
+ */
 ?>
 
 <form action="index.php" method="post" class="foldedCorner">
-    <h2><?= $article->getId() == -1 ? "Création d'un article" : "Modification de l'article "?></h2>
+    <h2><?= $article->getId() == -1 ? "Création d'un article" : "Modification de l'article " ?></h2>
     <div class="formGrid">
         <label for="title">Titre</label>
         <input type="text" name="title" id="title" value="<?= $article->getTitle() ?>" required>
@@ -17,9 +18,23 @@
     </div>
 </form>
 
-<script>
+<h2>Commentaires de l'article</h2>
 
-    
-    
-
-</script>
+<div class="adminArticle">
+    <?php if (!empty($comments)): ?>
+        <?php foreach ($comments as $comment): ?>
+            <div class="articleLine">
+                <div class="content"><?= $comment->getContent() ?></div>
+                <div>
+                    <a class="submit"
+                        href="index.php?action=deleteComment&id=<?= $comment->getId() ?>&idArticle=<?= $article->getId() ?>"
+                        <?= Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") ?>>
+                        Supprimer
+                    </a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucun commentaire pour cet article.</p>
+    <?php endif; ?>
+</div>

@@ -148,13 +148,10 @@ class ArticleManager extends AbstractEntityManager
         $sql = "SELECT a.id, a.title, a.date_creation,
                 (SELECT COUNT(1) FROM comment c WHERE c.id_article = a.id) AS comments,
                 (SELECT COUNT(1) FROM article_view av WHERE av.id_article = a.id) AS views
-            FROM article a;
-            ORDER BY :sort :order";
+            FROM article a
+            ORDER BY $sort $order";
 
-        $result = $this->db->query($sql, [
-            'sort' => $sort,
-            'order' => $order
-        ]);
+        $result = $this->db->query($sql);
         $data = [];
 
         while ($line = $result->fetch()) {

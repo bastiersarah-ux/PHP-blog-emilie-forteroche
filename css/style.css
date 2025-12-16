@@ -324,6 +324,7 @@ a.info {
         td {
             border: 2px solid var(--backgroundColor);
             padding: .75rem;
+            color: white;
         }
 
         tr:nth-child(even) {
@@ -359,6 +360,45 @@ a.info {
 .btn-container {
     display: flex;
     gap: 1rem;
+}
+
+
+th {
+    position: relative;
+    /* pour positionner les flèches à l'intérieur */
+    padding-right: 25px;
+    /* espace pour les flèches */
+    text-align: left;
+    /* texte à gauche */
+
+    .column-header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+
+        .sort-icons {
+            position: relative;
+            /* centrer verticalement */
+            display: flex;
+            flex-direction: column;
+            /* pour mettre ▲ et ▼ l'un sur l'autre */
+            font-size: 0.8em;
+            /* taille des flèches */
+
+            a {
+                text-decoration: none;
+                color: inherit;
+                margin: 1px 0;
+                /* espace entre les flèches */
+
+                &.active {
+                    color: var(--titleColor);
+                    pointer-events: none;
+                }
+            }
+        }
+    }
 }
 
 /** 
