@@ -33,13 +33,12 @@ class ArticleController
 
         $ip = Utils::getIpAddress(); // Récupère l'IP
         $articleManager->addView($id, $ip); // Enregistre la vue
-        $views = $articleManager->getViews($id); // Récupère le nombre de vue
 
         $commentManager = new CommentManager();
         $comments = $commentManager->getAllCommentsByArticleId($id);
 
         $view = new View($article->getTitle());
-        $view->render("detailArticle", ['article' => $article, 'comments' => $comments, 'nbViews' => $views]);
+        $view->render("detailArticle", ['article' => $article, 'comments' => $comments]);
     }
 
     /**
