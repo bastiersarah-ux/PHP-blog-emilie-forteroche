@@ -365,26 +365,22 @@ a.info {
 
 th {
     position: relative;
-    /* pour positionner les flèches à l'intérieur */
-    padding-right: 25px;
-    /* espace pour les flèches */
-    text-align: left;
-    /* texte à gauche */
 
     .column-header {
         display: flex;
-        gap: 1rem;
+        /* centrer verticalement */
         align-items: center;
+        /* espacement entre le libellé et les boutons de tri */
+        gap: 1rem;
         justify-content: space-between;
 
         .sort-icons {
             position: relative;
-            /* centrer verticalement */
             display: flex;
-            flex-direction: column;
             /* pour mettre ▲ et ▼ l'un sur l'autre */
-            font-size: 0.8em;
+            flex-direction: column;
             /* taille des flèches */
+            font-size: 0.8em;
 
             a {
                 text-decoration: none;

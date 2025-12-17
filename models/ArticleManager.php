@@ -94,7 +94,7 @@ class ArticleManager extends AbstractEntityManager
     }
 
     /**
-     * Enregistre la vue d'un article dans la BDD.
+     * Enregistre la vue d'un article.
      * On utilise un INSERT avec ON DUPLICATE KEY UPDATE pour éviter de compter deux fois la même IP pour le même article.
      *
      * @param integer $articleId
@@ -130,7 +130,7 @@ class ArticleManager extends AbstractEntityManager
     }
 
     /**
-     * Tri les données du tableau de monitoring
+     * Récupère et tri les données du tableau de monitoring
      * $sort = colonne par défaut pour trier (la date)
      * $order = sens de tri par défaut (descendant)
      *

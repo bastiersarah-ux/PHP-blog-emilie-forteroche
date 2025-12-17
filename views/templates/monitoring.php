@@ -5,7 +5,13 @@
  */
 
 
-
+/**
+ * Affecte la classe active (ou non) aux boutons de tri selon les critères courants.
+ *
+ * @param string $sort
+ * @param string $order
+ * @return string
+ */
 function getActiveClass(string $sort, string $order): string
 {
     $currentSort = $_GET['sort'] ?? 'date';
